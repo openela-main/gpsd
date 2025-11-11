@@ -13,8 +13,8 @@
 %global note2 https://access.redhat.com/support/policy/gpsd-support for more details.
 
 Name:           gpsd
-Version:        3.25
-Release:        17%{?dist}
+Version:        3.26.1
+Release:        1%{?dist}
 Epoch:          1
 Summary:        Service daemon for mediating access to a GPS
 
@@ -24,15 +24,6 @@ Source0:        https://download-mirror.savannah.gnu.org/releases/gpsd/%{name}-%
 # used only for building
 Source1:        https://github.com/SCons/scons/archive/%{scons_ver}/scons-%{scons_ver}.tar.gz
 Source11:       gpsd.sysconfig
-
-# add missing IPv6 support
-Patch1:         gpsd-ipv6.patch
-# fix some issues reported by coverity and shellcheck
-Patch2:         gpsd-scanfixes.patch
-# fix busy wait when reading from gpsd socket
-Patch3:         gpsd-busywait.patch
-# don't ignore unrecognized options in CFLAGS/LDFLAGS
-Patch4:         gpsd-sconsflags.patch
 
 BuildRequires:  gcc
 BuildRequires:  dbus-devel
@@ -147,10 +138,6 @@ This package contains X clients using gpsd.
 
 %prep
 %setup -q -a 1
-%patch -P 1 -p1 -b .ipv6
-%patch -P 2 -p1 -b .scanfixes
-%patch -P 3 -p1 -b .busywait
-%patch -P 4 -p1 -b .sconsflags
 
 # add note to man pages about limited support
 sed -i ':a;$!{N;ba};s|\(\.SH "[^"]*"\)|.SH "NOTE"\n%{note1}\n%{note2}\n\1|3' \
@@ -285,7 +272,7 @@ rm -rf %{buildroot}%{_docdir}/gpsd
 
 %if %{with_libs}
 %files libs
-%{_libdir}/libgps.so.30*
+%{_libdir}/libgps.so.31*
 
 %files devel
 %doc TODO HACKING
@@ -300,7 +287,7 @@ rm -rf %{buildroot}%{_docdir}/gpsd
 
 %if %{with_qt}
 %files qt
-%{_libdir}/libQgpsmm.so.30*
+%{_libdir}/libQgpsmm.so.31*
 
 %files qt-devel
 %{_libdir}/libQgpsmm.so
@@ -322,6 +309,7 @@ rm -rf %{buildroot}%{_docdir}/gpsd
 %{_bindir}/gpscsv
 %{_bindir}/gpsdebuginfo
 %{_bindir}/gpsdecode
+%{_bindir}/gpslogntp
 %{_bindir}/gpspipe
 %{_bindir}/gpsplot
 %{_bindir}/gpsprof
@@ -339,6 +327,7 @@ rm -rf %{buildroot}%{_docdir}/gpsd
 %{_mandir}/man1/gpscsv.1*
 %{_mandir}/man1/gpsdebuginfo.1*
 %{_mandir}/man1/gpsdecode.1*
+%{_mandir}/man1/gpslogntp.1*
 %{_mandir}/man1/gpspipe.1*
 %{_mandir}/man1/gpsplot.1*
 %{_mandir}/man1/gpsprof.1*
@@ -363,6 +352,9 @@ rm -rf %{buildroot}%{_docdir}/gpsd
 %{_mandir}/man1/xgpsspeed.1*
 
 %changelog
+* Thu May 29 2025 Miroslav Lichvar <mlichvar@redhat.com> - 1:3.26.1-1
+- update to 3.26.1 (RHEL-94234)
+
 * Tue Oct 29 2024 Troy Dawson <tdawson@redhat.com> - 1:3.25-17
 - Bump release for October 2024 mass rebuild:
   Resolves: RHEL-64018
