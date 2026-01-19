@@ -14,7 +14,7 @@
 
 Name:           gpsd
 Version:        3.26.1
-Release:        1%{?dist}
+Release:        1%{?dist}.1
 Epoch:          1
 Summary:        Service daemon for mediating access to a GPS
 
@@ -24,6 +24,11 @@ Source0:        https://download-mirror.savannah.gnu.org/releases/gpsd/%{name}-%
 # used only for building
 Source1:        https://github.com/SCons/scons/archive/%{scons_ver}/scons-%{scons_ver}.tar.gz
 Source11:       gpsd.sysconfig
+
+# fix buffer overflow in NMEA2000 driver
+Patch1:         gpsd-cve-2025-67268.patch
+# fix integer underflow in handling of Navcom packets
+Patch2:         gpsd-cve-2025-67269.patch
 
 BuildRequires:  gcc
 BuildRequires:  dbus-devel
@@ -138,6 +143,7 @@ This package contains X clients using gpsd.
 
 %prep
 %setup -q -a 1
+%autopatch -p1
 
 # add note to man pages about limited support
 sed -i ':a;$!{N;ba};s|\(\.SH "[^"]*"\)|.SH "NOTE"\n%{note1}\n%{note2}\n\1|3' \
@@ -352,6 +358,10 @@ rm -rf %{buildroot}%{_docdir}/gpsd
 %{_mandir}/man1/xgpsspeed.1*
 
 %changelog
+* Mon Jan 05 2026 Miroslav Lichvar <mlichvar@redhat.com> - 1:3.26.1-1.el10_1.1
+- fix buffer overflow in NMEA2000 driver (CVE-2025-67268)
+- fix integer underflow in handling of Navcom packets (CVE-2025-67269)
+
 * Thu May 29 2025 Miroslav Lichvar <mlichvar@redhat.com> - 1:3.26.1-1
 - update to 3.26.1 (RHEL-94234)
 
