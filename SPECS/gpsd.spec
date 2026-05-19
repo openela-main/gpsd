@@ -14,7 +14,7 @@
 
 Name:           gpsd
 Version:        3.26.1
-Release:        1%{?dist}.1
+Release:        3%{?dist}
 Epoch:          1
 Summary:        Service daemon for mediating access to a GPS
 
@@ -69,6 +69,9 @@ can share access to a GPS without contention or loss of data.  Also,
 gpsd responds to queries with a format that is substantially easier to
 parse than NMEA 0183.
 
+%{note1}
+%{note2}
+
 %if %{with_libs}
 %package libs
 Summary:        Client libraries in C for talking to a running gpsd or GPS
@@ -77,6 +80,9 @@ Summary:        Client libraries in C for talking to a running gpsd or GPS
 This package contains the gpsd libraries that manage access
 to a GPS for applications.
 
+%{note1}
+%{note2}
+
 %package devel
 Summary:        Development files for the gpsd library
 Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
@@ -84,6 +90,9 @@ Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 %description devel
 This package provides C header files for the gpsd shared libraries that
 manage access to a GPS for applications
+
+%{note1}
+%{note2}
 %endif
 
 %if %{with_qt}
@@ -97,6 +106,9 @@ Requires:       %{name}-libs%{?_isa} = %{epoch}:%{version}-%{release}
 This package provide C++ and Qt bindings for use with the libgps library from
 gpsd.
 
+%{note1}
+%{note2}
+
 %package qt-devel
 Summary:        Development files for the C++/Qt5 bindings for the gpsd library
 Requires:       %{name}-qt%{?_isa} = %{epoch}:%{version}-%{release}
@@ -104,6 +116,9 @@ Requires:       %{name}-qt%{?_isa} = %{epoch}:%{version}-%{release}
 %description qt-devel
 This package provides the development files for the C++ and Qt bindings for use
 with the libgps library from gpsd.
+
+%{note1}
+%{note2}
 %endif
 
 %package -n python3-%{name}
@@ -118,6 +133,9 @@ Requires:       python3-pyserial
 This package contains the python3 modules that manage access to a GPS for
 applications.
 
+%{note1}
+%{note2}
+
 %package clients
 Summary:        Clients for gpsd
 Requires:       python3-%{name} = %{epoch}:%{version}-%{release}
@@ -128,6 +146,9 @@ Obsoletes:      gpsd-minimal-clients
 
 %description clients
 This package contains various clients using gpsd.
+
+%{note1}
+%{note2}
 
 %package xclients
 Summary:        Graphical clients for gpsd
@@ -140,6 +161,9 @@ Conflicts:      gpsd-clients < 1:3.25-6
 
 %description xclients
 This package contains X clients using gpsd.
+
+%{note1}
+%{note2}
 
 %prep
 %setup -q -a 1
@@ -358,9 +382,12 @@ rm -rf %{buildroot}%{_docdir}/gpsd
 %{_mandir}/man1/xgpsspeed.1*
 
 %changelog
-* Mon Jan 05 2026 Miroslav Lichvar <mlichvar@redhat.com> - 1:3.26.1-1.el10_1.1
+* Mon Jan 19 2026 Miroslav Lichvar <mlichvar@redhat.com> - 1:3.26.1-3
 - fix buffer overflow in NMEA2000 driver (CVE-2025-67268)
 - fix integer underflow in handling of Navcom packets (CVE-2025-67269)
+
+* Wed Oct 01 2025 Miroslav Lichvar <mlichvar@redhat.com> - 1:3.26.1-2
+- add support note to package descriptions (RHEL-113507)
 
 * Thu May 29 2025 Miroslav Lichvar <mlichvar@redhat.com> - 1:3.26.1-1
 - update to 3.26.1 (RHEL-94234)
