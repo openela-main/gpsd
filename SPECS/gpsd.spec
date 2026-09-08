@@ -14,7 +14,7 @@
 
 Name:           gpsd
 Version:        3.26.1
-Release:        3%{?dist}.1
+Release:        3%{?dist}.2
 Epoch:          1
 Summary:        Service daemon for mediating access to a GPS
 
@@ -31,6 +31,8 @@ Patch1:         gpsd-cve-2025-67268.patch
 Patch2:         gpsd-cve-2025-67269.patch
 # fix command injection in gpsprof
 Patch3:         gpsd-cve-2026-58459.patch
+# fix another command injection in gpsprof
+Patch4:         gpsd-cve-2026-60122.patch
 
 BuildRequires:  gcc
 BuildRequires:  dbus-devel
@@ -384,6 +386,9 @@ rm -rf %{buildroot}%{_docdir}/gpsd
 %{_mandir}/man1/xgpsspeed.1*
 
 %changelog
+* Wed Aug 26 2026 Miroslav Lichvar <mlichvar@redhat.com> - 1:3.26.1-3.el10_2.2
+- fix another command injection in gpsprof (CVE-2026-60122)
+
 * Mon Jul 13 2026 Miroslav Lichvar <mlichvar@redhat.com> - 1:3.26.1-3.el10_2.1
 - fix command injection in gpsprof (CVE-2026-58459)
 
